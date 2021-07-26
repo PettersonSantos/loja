@@ -43,3 +43,16 @@ func FindAll() []Produto {
 
 		return produtos
 }
+
+func Save(nome, descricao string, preco float64, quantidade int) {
+	db := config.ConectaDB()
+	insert, err := db.Prepare("Insert into produtos (nome, descricao, preco, quantidade) values ($1, $2, $3, $4)")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	insert.Exec(nome, descricao, preco, quantidade)
+
+	defer db.Close()
+}
